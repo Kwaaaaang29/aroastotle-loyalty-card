@@ -117,9 +117,16 @@
             color: #fff;
         }
 
+        .customer-phone {
+            font-size: 0.65rem;
+            color: var(--gold-light);
+            margin-top: 2px;
+        }
+
         .card-id {
             font-size: 0.65rem;
             color: var(--text-dim);
+            margin-top: 2px;
         }
 
         .status-badge {
@@ -129,6 +136,7 @@
             padding: 4px 8px;
             border-radius: 20px;
             border: 1px solid rgba(212, 175, 55, 0.3);
+            cursor: pointer;
         }
 
         .stamps-grid {
@@ -238,16 +246,86 @@
             display: block;
             margin-top: 6px;
         }
+
+        /* REGISTRATION MODAL STYLES */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: #1a1a1a;
+            border: 1px solid var(--gold-main);
+            border-radius: 16px;
+            padding: 20px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-main);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .modal-desc {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: #121212;
+            color: #fff;
+            font-size: 0.8rem;
+            outline: none;
+        }
+
+        .modal-input:focus {
+            border-color: var(--gold-light);
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
+
+    <!-- REGISTRATION POPUP MODAL -->
+    <div class="modal-overlay" id="regModal">
+        <div class="modal-box">
+            <div class="modal-title">Register Loyalty Card</div>
+            <div class="modal-desc">Enter your details to activate your digital card and save your stamps.</div>
+            <input type="text" id="inputName" class="modal-input" placeholder="Full Name (e.g. Juan Cruz)">
+            <input type="tel" id="inputPhone" class="modal-input" placeholder="Contact Number (e.g. 09123456789)">
+            <button class="btn" style="width: 100%;" id="saveRegBtn">COMPLETE REGISTRATION</button>
+        </div>
+    </div>
 
     <div class="card-container">
         <!-- BRAND HEADER -->
         <div class="brand-header">
             <div class="top-quote">“More than just a café—it’s a place where good food meets good vibes and every customer feels welcome.”</div>
             <div class="logo-container">
-                <img src="logo.jpg" alt="aroastotle cafe logo" class="logo-img">
+                <img src="41287.jpg" alt="aroastotle cafe logo" class="logo-img">
             </div>
             <div class="establishment-tag">Est. 2026</div>
             <div class="sub-tagline">~ Awaken the Mind ~</div>
@@ -256,10 +334,11 @@
         <!-- CUSTOMER DETAILS -->
         <div class="info-bar">
             <div>
-                <div class="customer-name">Valued Customer</div>
-                <div class="card-id">NFC ID: #ARO-882026</div>
+                <div class="customer-name" id="dispName">Valued Customer</div>
+                <div class="customer-phone" id="dispPhone">📱 Click badge to edit</div>
+                <div class="card-id" id="dispID">NFC ID: #ARO-882026</div>
             </div>
-            <div class="status-badge">📡 NFC READY</div>
+            <div class="status-badge" id="editProfileBtn">✏️ EDIT PROFILE</div>
         </div>
 
         <!-- STAMPS GRID -->
@@ -284,20 +363,80 @@
     </div>
 
     <script>
-        let stampCount = 1;
         const maxStamps = 10;
         const adminPass = "1234";
+
+        const regModal = document.getElementById('regModal');
+        const inputName = document.getElementById('inputName');
+        const inputPhone = document.getElementById('inputPhone');
+        const saveRegBtn = document.getElementById('saveRegBtn');
+
+        const dispName = document.getElementById('dispName');
+        const dispPhone = document.getElementById('dispPhone');
+        const dispID = document.getElementById('dispID');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+
         const stampsGrid = document.getElementById('stampsGrid');
         const addStampBtn = document.getElementById('addStampBtn');
         const resetBtn = document.getElementById('resetBtn');
 
+        // Load Saved Data or Show Modal
+        function initUserData() {
+            const savedName = localStorage.getItem('aro_name');
+            const savedPhone = localStorage.getItem('aro_phone');
+            let savedID = localStorage.getItem('aro_id');
+
+            if (!savedID) {
+                savedID = '#ARO-' + Math.floor(100000 + Math.random() * 900000);
+                localStorage.setItem('aro_id', savedID);
+            }
+
+            if (!savedName || !savedPhone) {
+                regModal.classList.remove('hidden');
+            } else {
+                regModal.classList.add('hidden');
+                dispName.innerText = savedName;
+                dispPhone.innerText = '📱 ' + savedPhone;
+            }
+            dispID.innerText = 'NFC ID: ' + savedID;
+        }
+
+        saveRegBtn.addEventListener('click', () => {
+            const name = inputName.value.trim();
+            const phone = inputPhone.value.trim();
+
+            if (!name || !phone) {
+                alert('Please enter both your Name and Phone Number.');
+                return;
+            }
+
+            localStorage.setItem('aro_name', name);
+            localStorage.setItem('aro_phone', phone);
+            initUserData();
+        });
+
+        editProfileBtn.addEventListener('click', () => {
+            inputName.value = localStorage.getItem('aro_name') || '';
+            inputPhone.value = localStorage.getItem('aro_phone') || '';
+            regModal.classList.remove('hidden');
+        });
+
+        function getStampCount() {
+            return parseInt(localStorage.getItem('aro_stamps') || '0', 10);
+        }
+
+        function setStampCount(count) {
+            localStorage.setItem('aro_stamps', count);
+        }
+
         function renderStamps(lastAddedIndex = -1) {
+            const count = getStampCount();
             stampsGrid.innerHTML = '';
             for (let i = 1; i <= maxStamps; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'stamp-slot';
                 
-                if (i <= stampCount) {
+                if (i <= count) {
                     slot.classList.add('stamped');
                     slot.innerHTML = '☕';
                     if (i === lastAddedIndex) {
@@ -322,10 +461,11 @@
                 const qtyInput = prompt("How many stamps to add?", "1");
                 const qty = parseInt(qtyInput, 10);
                 if (!isNaN(qty) && qty > 0) {
-                    const newCount = Math.min(stampCount + qty, maxStamps);
-                    stampCount = newCount;
-                    renderStamps(stampCount);
-                    if (stampCount === maxStamps) {
+                    let current = getStampCount();
+                    const newCount = Math.min(current + qty, maxStamps);
+                    setStampCount(newCount);
+                    renderStamps(newCount);
+                    if (newCount === maxStamps) {
                         setTimeout(() => alert('Congratulations! You earned your reward!'), 300);
                     }
                 }
@@ -337,13 +477,14 @@
         resetBtn.addEventListener('click', () => {
             const pass = prompt("Enter Barista Password to reset card:");
             if (pass === adminPass) {
-                stampCount = 0;
+                setStampCount(0);
                 renderStamps();
             } else if (pass !== null) {
                 alert("Incorrect password!");
             }
         });
 
+        initUserData();
         renderStamps();
     </script>
 </body>
