@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aroastotle CAFE - Loyalty Card</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Playfair+Display:ital,wght@1,600&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>AROASTOTLE CAFE - Loyalty Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f0f0f;
-            --card-bg: #181818;
-            --gold-light: #f5d77f;
+            --bg-dark: #121212;
+            --card-bg: #1a1a1a;
+            --gold-light: #f3a83b;
             --gold-main: #d4af37;
-            --gold-dark: #aa820a;
+            --gold-dark: #aa7c11;
             --text-gold: #e5c158;
             --text-light: #e0e0e0;
             --text-dim: #888888;
@@ -37,10 +37,10 @@
         .card-container {
             width: 100%;
             max-width: 380px;
-            background: linear-gradient(145deg, #1c1c1c, #121212);
-            border-radius: 24px;
-            padding: 30px 24px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 2px rgba(212, 175, 55, 0.3);
+            background: linear-gradient(145deg, #1e1e1e, #121212);
+            border-radius: 20px;
+            padding: 24px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(212, 175, 55, 0.1);
             border: 1px solid rgba(212, 175, 55, 0.15);
             display: flex;
             flex-direction: column;
@@ -55,20 +55,20 @@
             width: 100%;
         }
 
-        .establishment-tag {
+        .top-quote {
             font-family: 'Cinzel', serif;
             font-size: 0.75rem;
             color: var(--gold-main);
-            letter-spacing: 4px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            padding: 0 5px;
         }
 
-        /* Clean Logo Container without circle frame */
         .logo-container {
-            width: 150px;
+            width: 130px;
             height: auto;
-            margin: 0 auto;
+            margin: 0 auto 10px auto;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -78,59 +78,71 @@
             width: 100%;
             height: auto;
             object-fit: contain;
-            border-radius: 50%; /* Keeps image smooth if background is dark */
+            border-radius: 50%;
         }
 
-        /* Customer Info Bar */
+        .establishment-tag {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            color: var(--gold-main);
+            letter-spacing: 2px;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .sub-tagline {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            color: var(--gold-main);
+            letter-spacing: 1.5px;
+            margin-top: 4px;
+        }
+
         .info-bar {
             width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
             border-radius: 12px;
             padding: 10px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .customer-name {
             font-size: 0.85rem;
             font-weight: 600;
-            color: var(--text-light);
+            color: #fff;
         }
 
         .card-id {
             font-size: 0.65rem;
             color: var(--text-dim);
-            letter-spacing: 1px;
         }
 
-        .nfc-badge {
-            font-size: 0.6rem;
+        .status-badge {
+            font-size: 0.65rem;
             color: var(--gold-light);
-            border: 1px solid var(--gold-dark);
-            padding: 2px 6px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
         }
 
-        /* Stamps Grid */
         .stamps-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
+            gap: 10px;
             width: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .stamp-slot {
             aspect-ratio: 1;
             border-radius: 50%;
-            border: 1px dashed rgba(212, 175, 55, 0.3);
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -141,70 +153,70 @@
         }
 
         .stamp-slot.stamped {
-            border: 1px solid var(--gold-main);
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(0,0,0,0.4) 100%);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-main);
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(0,0,0,0.6) 100%);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
         }
 
-        .stamp-icon {
-            width: 60%;
-            height: 60%;
-            object-fit: contain;
-            display: none;
+        .stamp-slot.reward {
+            border-style: dashed;
+            border-color: var(--gold-light);
         }
 
-        .stamp-slot.stamped .stamp-icon {
-            display: block;
+        .reward-icon {
+            font-size: 0.9rem;
         }
 
-        .stamp-slot.stamped .slot-number {
-            display: none;
-        }
-
-        .stamp-slot.reward-slot {
-            border: 1px dashed var(--gold-main);
-        }
-
-        .stamp-slot.reward-slot .slot-number {
-            color: var(--gold-main);
-            font-weight: bold;
-        }
-
-        /* Reward Description */
         .reward-info {
             text-align: center;
+            font-size: 0.7rem;
+            color: var(--gold-light);
             margin-bottom: 20px;
+            line-height: 1.4;
         }
 
-        .reward-title {
-            font-size: 0.75rem;
-            color: var(--text-gold);
-            margin-bottom: 4px;
-        }
-
-        /* Interactive Controls for Demo */
-        .controls {
+        .action-container {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            width: 100%;
+            margin-bottom: 20px;
         }
 
         .btn {
             background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
             color: #000;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 8px;
             font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
             letter-spacing: 0.5px;
+            flex: 2;
         }
 
         .btn-reset {
             background: transparent;
             color: var(--text-dim);
             border: 1px solid var(--text-dim);
+            flex: 1;
+        }
+
+        .footer-info {
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            margin-top: 5px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 0.75rem;
+            color: #ffffff;
+            line-height: 1.5;
+        }
+
+        .footer-info strong {
+            color: #ffffff;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -213,11 +225,12 @@
     <div class="card-container">
         <!-- BRAND HEADER -->
         <div class="brand-header">
-            <div class="establishment-tag">Est. 2026</div>
+            <div class="top-quote">“More than just a café—it’s a place where good food meets good vibes and every customer feels welcome.”</div>
             <div class="logo-container">
-                <!-- Check filename matches your uploaded file (e.g. 41265_2.jpg or logo.jpg) -->
-                <img src="logo.jpg" alt="aroastotle philosopher logo" class="logo-img">
+                <img src="41265_2.jpg" alt="aroastotle philosopher logo" class="logo-img">
             </div>
+            <div class="establishment-tag">Est. 2026</div>
+            <div class="sub-tagline">~ Awaken the Mind ~</div>
         </div>
 
         <!-- CUSTOMER DETAILS -->
@@ -226,67 +239,79 @@
                 <div class="customer-name">Valued Customer</div>
                 <div class="card-id">NFC ID: #ARO-882026</div>
             </div>
-            <div class="nfc-badge">
-                📡 NFC READY
-            </div>
+            <div class="status-badge">📡 NFC READY</div>
         </div>
 
-        <!-- STAMPS GRID (10 Slots) -->
+        <!-- STAMPS GRID -->
         <div class="stamps-grid" id="stampsGrid">
-            <!-- Slots 1 to 9 -->
-            <div class="stamp-slot stamped"><span class="slot-number">1</span><span class="stamp-icon">☕</span></div>
-            <div class="stamp-slot"><span class="slot-number">2</span><span class="stamp-icon">☕</span></div>
-            <div class="stamp-slot"><span class="slot-number">3</span><span class="stamp-icon">☕</span></div>
-            <div class="stamp-slot"><span class="slot-number">4</span><span class="stamp-icon">☕</span></div>
-            <div class="stamp-slot"><span class="slot-number">5</span><span class="stamp-icon">☕</span></div>
-            <div class="stamp-slot"><span class="slot-number">6</span><span class="stamp-icon">☕</span></div>
-            <div class="stamp-slot"><span class="slot-number">7</span><span class="stamp-icon">☕</span></div>
-            <div class="stamp-slot"><span class="slot-number">8</span><span class="stamp-icon">☕</span></div>
-            <div class="stamp-slot"><span class="slot-number">9</span><span class="stamp-icon">☕</span></div>
-            <!-- Slot 10 (Reward) -->
-            <div class="stamp-slot reward-slot"><span class="slot-number">🎁</span><span class="stamp-icon">🎉</span></div>
+            <div class="stamp-slot stamped">☕</div>
+            <div class="stamp-slot">2</div>
+            <div class="stamp-slot">3</div>
+            <div class="stamp-slot">4</div>
+            <div class="stamp-slot">5</div>
+            <div class="stamp-slot">6</div>
+            <div class="stamp-slot">7</div>
+            <div class="stamp-slot">8</div>
+            <div class="stamp-slot">9</div>
+            <div class="stamp-slot reward"><span class="reward-icon">🎁</span></div>
         </div>
 
-        <!-- REWARD FOOTER -->
         <div class="reward-info">
-            <div class="reward-title">Collect 10 stamps to get Hot and Iced Coffee & Matcha series</div>
+            Collect 10 stamps to get Hot and Iced Coffee & Matcha series
         </div>
 
         <!-- ACTION BUTTONS -->
-        <div class="controls">
-            <button class="btn" onclick="addStamp()">TAP TO ADD STAMPS (+)</button>
-            <button class="btn btn-reset" onclick="resetStamps()">RESET CARD</button>
+        <div class="action-container">
+            <button class="btn" id="addStampBtn">TAP TO ADD STAMPS (+)</button>
+            <button class="btn btn-reset" id="resetBtn">RESET CARD</button>
+        </div>
+
+        <!-- LOCATION & CONTACT INFO -->
+        <div class="footer-info">
+            <p><strong>Call us:</strong></p>
+            <p><strong>Location:</strong> AROASTOTLE CAFE - BAGONG SILANG BRANCH Phase 4 package 8 Langit Road Bagong Silang, Caloocan, Philippines, 1428</p>
         </div>
     </div>
 
     <script>
-        let currentStamps = 1;
-        const totalSlots = 10;
+        let stampCount = 1;
+        const maxStamps = 10;
+        const stampsGrid = document.getElementById('stampsGrid');
+        const addStampBtn = document.getElementById('addStampBtn');
+        const resetBtn = document.getElementById('resetBtn');
 
-        function updateCard() {
-            const slots = document.querySelectorAll('.stamp-slot');
-            slots.forEach((slot, index) => {
-                if (index < currentStamps) {
+        function renderStamps() {
+            stampsGrid.innerHTML = '';
+            for (let i = 1; i <= maxStamps; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'stamp-slot';
+                
+                if (i <= stampCount) {
                     slot.classList.add('stamped');
+                    slot.innerHTML = '☕';
+                } else if (i === maxStamps) {
+                    slot.classList.add('reward');
+                    slot.innerHTML = '<span class="reward-icon">🎁</span>';
                 } else {
-                    slot.classList.remove('stamped');
+                    slot.innerText = i;
                 }
-            });
-        }
-
-        function addStamp() {
-            if (currentStamps < totalSlots) {
-                currentStamps++;
-                updateCard();
-            } else {
-                alert("Congratulations! You've earned a free drink!");
+                stampsGrid.appendChild(slot);
             }
         }
 
-        function resetStamps() {
-            currentStamps = 0;
-            updateCard();
-        }
+        addStampBtn.addEventListener('click', () => {
+            if (stampCount < maxStamps) {
+                stampCount++;
+                renderStamps();
+            } else {
+                alert('Congratulations! You earned your reward!');
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            stampCount = 0;
+            renderStamps();
+        });
     </script>
 </body>
 </html>
