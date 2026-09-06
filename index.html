@@ -66,7 +66,7 @@
         }
 
         .logo-container {
-            width: 130px;
+            width: 160px;
             height: auto;
             margin: 0 auto 10px auto;
             display: flex;
@@ -78,12 +78,13 @@
             width: 100%;
             height: auto;
             object-fit: contain;
-            border-radius: 50%;
+            display: block;
+            border-radius: 8px;
         }
 
         .establishment-tag {
             font-family: 'Cinzel', serif;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--gold-main);
             letter-spacing: 2px;
             margin-top: 5px;
@@ -136,6 +137,7 @@
             gap: 10px;
             width: 100%;
             margin-bottom: 20px;
+            position: relative;
         }
 
         .stamp-slot {
@@ -156,6 +158,22 @@
             border-color: var(--gold-main);
             background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(0,0,0,0.6) 100%);
             box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .plus-pop {
+            position: absolute;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--gold-light);
+            top: -12px;
+            right: -2px;
+            animation: fadeUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(0); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-8px); }
         }
 
         .stamp-slot.reward {
@@ -207,16 +225,18 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 15px;
             margin-top: 5px;
-            text-align: center;
-            font-family: Arial, sans-serif;
+            text-align: left;
             font-size: 0.75rem;
             color: #ffffff;
             line-height: 1.5;
         }
 
-        .footer-info strong {
-            color: #ffffff;
-            font-weight: bold;
+        .footer-label {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-main);
+            font-weight: 700;
+            display: block;
+            margin-top: 6px;
         }
     </style>
 </head>
@@ -227,7 +247,7 @@
         <div class="brand-header">
             <div class="top-quote">“More than just a café—it’s a place where good food meets good vibes and every customer feels welcome.”</div>
             <div class="logo-container">
-                <img src="41265_2.jpg" alt="aroastotle philosopher logo" class="logo-img">
+                <img src="logo.jpg" alt="aroastotle cafe logo" class="logo-img">
             </div>
             <div class="establishment-tag">Est. 2026</div>
             <div class="sub-tagline">~ Awaken the Mind ~</div>
@@ -243,18 +263,7 @@
         </div>
 
         <!-- STAMPS GRID -->
-        <div class="stamps-grid" id="stampsGrid">
-            <div class="stamp-slot stamped">☕</div>
-            <div class="stamp-slot">2</div>
-            <div class="stamp-slot">3</div>
-            <div class="stamp-slot">4</div>
-            <div class="stamp-slot">5</div>
-            <div class="stamp-slot">6</div>
-            <div class="stamp-slot">7</div>
-            <div class="stamp-slot">8</div>
-            <div class="stamp-slot">9</div>
-            <div class="stamp-slot reward"><span class="reward-icon">🎁</span></div>
-        </div>
+        <div class="stamps-grid" id="stampsGrid"></div>
 
         <div class="reward-info">
             Collect 10 stamps to get Hot and Iced Coffee & Matcha series
@@ -268,19 +277,21 @@
 
         <!-- LOCATION & CONTACT INFO -->
         <div class="footer-info">
-            <p><strong>Call us:</strong></p>
-            <p><strong>Location:</strong> AROASTOTLE CAFE - BAGONG SILANG BRANCH Phase 4 package 8 Langit Road Bagong Silang, Caloocan, Philippines, 1428</p>
+            <span class="footer-label">Call us:</span>
+            <span class="footer-label">Location:</span>
+            <span>AROASTOTLE CAFE - BAGONG SILANG BRANCH Phase 4 package 8 Langit Road Bagong Silang, Caloocan, Philippines, 1428</span>
         </div>
     </div>
 
     <script>
         let stampCount = 1;
         const maxStamps = 10;
+        const adminPass = "1234";
         const stampsGrid = document.getElementById('stampsGrid');
         const addStampBtn = document.getElementById('addStampBtn');
         const resetBtn = document.getElementById('resetBtn');
 
-        function renderStamps() {
+        function renderStamps(lastAddedIndex = -1) {
             stampsGrid.innerHTML = '';
             for (let i = 1; i <= maxStamps; i++) {
                 const slot = document.createElement('div');
@@ -289,6 +300,12 @@
                 if (i <= stampCount) {
                     slot.classList.add('stamped');
                     slot.innerHTML = '☕';
+                    if (i === lastAddedIndex) {
+                        const pop = document.createElement('span');
+                        pop.className = 'plus-pop';
+                        pop.innerText = '+1';
+                        slot.appendChild(pop);
+                    }
                 } else if (i === maxStamps) {
                     slot.classList.add('reward');
                     slot.innerHTML = '<span class="reward-icon">🎁</span>';
@@ -300,18 +317,34 @@
         }
 
         addStampBtn.addEventListener('click', () => {
-            if (stampCount < maxStamps) {
-                stampCount++;
-                renderStamps();
-            } else {
-                alert('Congratulations! You earned your reward!');
+            const pass = prompt("Enter Barista Password to add stamps:");
+            if (pass === adminPass) {
+                const qtyInput = prompt("How many stamps to add?", "1");
+                const qty = parseInt(qtyInput, 10);
+                if (!isNaN(qty) && qty > 0) {
+                    const newCount = Math.min(stampCount + qty, maxStamps);
+                    stampCount = newCount;
+                    renderStamps(stampCount);
+                    if (stampCount === maxStamps) {
+                        setTimeout(() => alert('Congratulations! You earned your reward!'), 300);
+                    }
+                }
+            } else if (pass !== null) {
+                alert("Incorrect password!");
             }
         });
 
         resetBtn.addEventListener('click', () => {
-            stampCount = 0;
-            renderStamps();
+            const pass = prompt("Enter Barista Password to reset card:");
+            if (pass === adminPass) {
+                stampCount = 0;
+                renderStamps();
+            } else if (pass !== null) {
+                alert("Incorrect password!");
+            }
         });
+
+        renderStamps();
     </script>
 </body>
 </html>
